@@ -6,10 +6,12 @@ use App\Entity\Article;
 use Symfony\Component\Form\{
     AbstractType, FormBuilderInterface
 };
+use App\Validator\IsValidFile;
 use Symfony\Component\Form\Extension\Core\Type\{
-    SubmitType, TextareaType, TextType
+    FileType, SubmitType, TextareaType, TextType
 };
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 /**
  * Class ArticleFormType
@@ -28,6 +30,14 @@ class ArticleFormType extends AbstractType
             ->add("title", TextType::class)
             ->add("description", TextareaType::class, [
                 "required" => false
+            ])
+            ->add("file", FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File(["maxSize" => "1024k",]),
+                    new IsValidFile(),
+                ]
             ])
             ->add("save", SubmitType::class);
     }

@@ -11,5 +11,18 @@
     </div>
     <hr/>
     {{ form_start(form) }}
+    {{ form_row(form.author) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    <div class="alert alert-info">
+        You can upload file with articles data.
+        Available extensions are {{ _self.getExampleLink("csv") }}, {{ _self.getExampleLink("json") }}, {{ _self.getExampleLink("yaml") }} (click to download examples).
+        Form fields will be rewritten by file content
+    </div>
+    {{ form_row(form.file) }}
     {{ form_end(form) }}
 {% endblock %}
+
+{% macro getExampleLink(extension) %}
+    <a href="{{ asset("examples/article." ~ extension ) }}" download>{{ extension }}</a>
+{% endmacro %}

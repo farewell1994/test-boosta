@@ -49,7 +49,7 @@ class ArticleController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $am->save($article);
+            $am->save($article, $form->get('file')->getData());
             $this->addFlash("success", "Article has been successfully created");
 
             return $this->redirectToRoute("article");
@@ -75,7 +75,7 @@ class ArticleController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $am->update($article);
+            $am->update($article, $form->get('file')->getData());
             $this->addFlash("success", "Article has been successfully edited");
 
             return $this->redirectToRoute("article");
