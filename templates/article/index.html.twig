@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+        <div class="row">
+            <div class="col">
+                <h4>Articles</h4>
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-primary" href="{{ path("article_create") }}">Create</a>
+            </div>
+        </div>
+        <hr/>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Created</th>
+                        <th>Edited</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if articles %}
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{ article.id }}</td>
+                                <td>{{ article.author }}</td>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.description }}</td>
+                                <td>{{ article.created.format("d.m.Y H:i") }}</td>
+                                <td>{{ article.edited.format("d.m.Y H:i") }}</td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm"
+                                       href="{{ path("article_edit" , {"id": article.id}) }}">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ path("article_delete", {"id": article.id}) }}">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7">No data</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            {% if totalPages %}
+                {% for i in 1.. totalPages %}
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-secondary" href="{{ path("article", {"page": i}) }}">
+                            {{ i }}
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ header }}{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h4>{{ header }}</h4>
+        </div>
+        <div class="col text-right">
+            <a class="btn btn-danger" href="{{ path("article") }}">Go back</a>
+        </div>
+    </div>
+    <hr/>
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+{% endblock %}
