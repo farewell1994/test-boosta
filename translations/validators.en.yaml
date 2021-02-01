@@ -1,0 +1,4 @@
+article:
+    not_allowed_extension: "File has not allowed extension"
+    required_field: "This field required"
+    incorrect_yaml_structure: "YAML file contains invalid structure"
