@@ -84,6 +84,7 @@ class ArticleManager
     private function rewriteArticleFromFile(Article $article, UploadedFile $file): Article
     {
         $driver = $this->chain->getDriver($file->getClientMimeType());
+        // OK! this file already validated
         $uploadedArticle = $driver->convertContentToArticle($file->getContent());
 
         return $article

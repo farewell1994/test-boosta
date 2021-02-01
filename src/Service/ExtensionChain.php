@@ -8,9 +8,7 @@ namespace App\Service;
  */
 class ExtensionChain
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $drivers = [];
 
     /**

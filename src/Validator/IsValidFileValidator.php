@@ -17,10 +17,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class IsValidFileValidator extends ConstraintValidator
 {
-
-    /**
-     * @var ExtensionChain
-     */
+    /** @var ExtensionChain */
     private $chain;
 
     /**
@@ -47,12 +44,12 @@ class IsValidFileValidator extends ConstraintValidator
         }
 
         $clientMimeType = $value->getClientMimeType();
-        // don't use usual File Constraint because it read text/csv as text/plain
+        // usual File Constraint don't used because it read text/csv as text/plain
         $allowedMimeTypes = [CsvDriver::CSV_MIME_TYPE, JsonDriver::JSON_MIME_TYPE, YamlDriver::YAML_MIME_TYPE];
 
         if (!in_array($clientMimeType, $allowedMimeTypes)) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', "Mime type {$clientMimeType} is not allowed")
+            $this->context
+                ->buildViolation("article.not_allowed_extension")
                 ->addViolation();
 
             return;
@@ -60,11 +57,12 @@ class IsValidFileValidator extends ConstraintValidator
 
         $driver = $this->chain->getDriver($clientMimeType);
         $article = $driver->convertContentToArticle($value->getContent());
+        $driver->isValidContent($article);
 
-        if(!$isValidContent = $driver->isValidContent($article)) {
-            foreach ($driver->getValidErrors() as $error) {
-                $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ value }}', $error)
+        if ($errors = $driver->getValidErrors()) {
+            foreach ($errors as $error) {
+                $this->context
+                    ->buildViolation($error)
                     ->addViolation();
             }
         }

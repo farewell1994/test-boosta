@@ -11,5 +11,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsValidFile extends Constraint
 {
-    public $message = "{{ value }}";
+    public $message = "article.not_allowed_extension";
 }

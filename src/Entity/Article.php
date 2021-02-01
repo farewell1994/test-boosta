@@ -19,16 +19,20 @@ class Article
     private $id;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min = 3)
      * @ORM\Column(type="string", length=255)
+     * @Assert\Expression(
+     *     "this.checkAuthor()",
+     *     message="article.required_field"
+     * )
      */
     private $author;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min = 3)
      * @ORM\Column(type="string", length=255)
+     * @Assert\Expression(
+     *     "this.checkTitle()",
+     *     message="article.required_field"
+     * )
      */
     private $title;
 
@@ -36,6 +40,11 @@ class Article
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $fromFile;
 
     /**
      * @ORM\Column(type="datetime")
@@ -54,6 +63,7 @@ class Article
     {
         $this->created = new \DateTime();
         $this->edited = new \DateTime();
+        $this->fromFile = false;
     }
 
     /**
@@ -73,10 +83,10 @@ class Article
     }
 
     /**
-     * @param string $author
+     * @param string|null $author
      * @return $this
      */
-    public function setAuthor(string $author): self
+    public function setAuthor(?string $author): self
     {
         $this->author = $author;
 
@@ -92,10 +102,10 @@ class Article
     }
 
     /**
-     * @param string $title
+     * @param string|null $title
      * @return $this
      */
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -122,18 +132,37 @@ class Article
     }
 
     /**
-     * @return \DateTime
+     * @return bool
      */
-    public function getCreated(): \DateTime
+    public function isFromFile(): bool
+    {
+        return $this->fromFile;
+    }
+
+    /**
+     * @param bool $fromFile
+     * @return Article
+     */
+    public function setFromFile(bool $fromFile): Article
+    {
+        $this->fromFile = $fromFile;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCreated(): \DateTimeInterface
     {
         return $this->created;
     }
 
     /**
-     * @param \DateTime $created
-     * @return Article
+     * @param \DateTimeInterface $created
+     * @return $this
      */
-    public function setCreated(\DateTime $created): Article
+    public function setCreated(\DateTimeInterface $created): Article
     {
         $this->created = $created;
 
@@ -141,21 +170,37 @@ class Article
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getEdited(): \DateTime
+    public function getEdited(): \DateTimeInterface
     {
         return $this->edited;
     }
 
     /**
-     * @param \DateTime $edited
+     * @param \DateTimeInterface $edited
      * @return Article
      */
-    public function setEdited(\DateTime $edited): Article
+    public function setEdited(\DateTimeInterface $edited): Article
     {
         $this->edited = $edited;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkTitle(): bool
+    {
+        return (!$this->isFromFile() && $this->getTitle()) || $this->isFromFile();
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkAuthor(): bool
+    {
+        return (!$this->isFromFile() && $this->getAuthor()) || $this->isFromFile();
     }
 }

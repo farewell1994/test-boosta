@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ header }}{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col">
             <h4>{{ header }}</h4>
         </div>
         <div class="col text-right">
-            <a class="btn btn-danger" href="{{ path("article") }}">Go back</a>
+            <a class="btn btn-danger" href="{{ path("article") }}">{{ "article.go_back"|trans }}</a>
         </div>
     </div>
     <hr/>
@@ -14,12 +16,14 @@
     {{ form_row(form.author) }}
     {{ form_row(form.title) }}
     {{ form_row(form.description) }}
-    <div class="alert alert-info">
-        You can upload file with articles data.
-        Available extensions are {{ _self.getExampleLink("csv") }}, {{ _self.getExampleLink("json") }}, {{ _self.getExampleLink("yaml") }} (click to download examples).
-        Form fields will be rewritten by file content
-    </div>
     {{ form_row(form.file) }}
+    <div class="alert alert-info">
+        {{ "article.available_extensions"|trans }}: {{ _self.getExampleLink("csv") }}, {{ _self.getExampleLink("json") }}
+        , {{ _self.getExampleLink("yaml") }} ({{ "article.download_examples_hint"|trans }}).
+    </div>
+    <div class="alert alert-warning">
+        {{ "article.upload_warning"|trans }}
+    </div>
     {{ form_end(form) }}
 {% endblock %}
 

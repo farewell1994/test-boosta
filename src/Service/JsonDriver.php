@@ -21,8 +21,8 @@ class JsonDriver extends BaseDriver implements ExtensionDriverInterface
         $array = json_decode($content, true);
 
         return (new Article())
-            ->setAuthor((string) ($array["author"] ?? null))
-            ->setTitle((string) ($array["title"] ?? null))
-            ->setDescription((string) ($array["description"] ?? null));
+            ->setAuthor($array["author"] ?? null)
+            ->setTitle($array["title"] ?? null)
+            ->setDescription($array["description"] ?? null);
     }
 }

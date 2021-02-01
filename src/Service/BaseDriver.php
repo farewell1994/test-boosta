@@ -6,20 +6,20 @@ use App\Entity\Article;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class BaseDriver
+ * @package App\Service
+ */
 class BaseDriver
 {
-    /**
-     * @var ValidatorInterface
-     */
+    /** @var ValidatorInterface */
     private $validator;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $validErrors = [];
 
     /**
-     * CsvDriver constructor.
+     * BaseDriver constructor.
      * @param ValidatorInterface $validator
      */
     public function __construct(ValidatorInterface $validator)
